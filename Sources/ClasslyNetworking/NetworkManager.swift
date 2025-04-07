@@ -55,8 +55,8 @@ public final class NetworkManager: NetworkManagerProtocol {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = request.urlMethod.rawValue
         urlRequest.timeoutInterval = 30
-        if let body = request.body {
-            urlRequest.httpBody = try encode(body)
+        if let requestWithBody = request as? (any RequestWithBody) {
+            urlRequest.httpBody = try encode(requestWithBody.body)
         }
         request.headers.forEach { header in
             urlRequest.setValue(header.value, forHTTPHeaderField: header.key)

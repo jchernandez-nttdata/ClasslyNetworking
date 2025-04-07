@@ -9,7 +9,6 @@ import Foundation
 
 public protocol Request {
     associatedtype Response: Decodable
-    associatedtype Body: Encodable
 
     var urlMethod: HTTPMethod { get set }
     var baseURL: String { get }
@@ -17,7 +16,6 @@ public protocol Request {
     var validStatusCodes: [Int] { get }
     var headers: [String: String?] { get }
     var params: [String: String]? { get }
-    var body: Body? { get }
 }
 
 public extension Request {
