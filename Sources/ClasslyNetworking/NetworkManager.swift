@@ -28,11 +28,11 @@ public final class NetworkManager: NetworkManagerProtocol {
             let (data, response) = try await urlSession.data(for: urlRequest)
 
             guard let httpResponse = response as? HTTPURLResponse else {
-                throw NetworkError.invalidResponse
+                throw NetworkError.invalidResponseType
             }
 
             guard (200...299).contains(httpResponse.statusCode) else {
-                throw NetworkError.invalidResponse
+                throw NetworkError.invalidResponse(statusCode: httpResponse.statusCode)
             }
 
             let decodedResponse: T.Response = try decodeData(data)
