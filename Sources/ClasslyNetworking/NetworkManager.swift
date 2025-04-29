@@ -51,6 +51,9 @@ public final class NetworkManager: NetworkManagerProtocol {
 
             let decodedResponse: T.Response = try decodeData(data)
             return decodedResponse
+
+        } catch let error as NetworkError {
+            throw error
         } catch {
             throw NetworkError.requestFailed(error)
         }
