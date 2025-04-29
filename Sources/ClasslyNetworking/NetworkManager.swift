@@ -24,11 +24,25 @@ public final class NetworkManager: NetworkManagerProtocol {
     /// - Throws: NetworkError if the request fails or the response cannot be decoded.
     public func performRequest<T: Request>(_ request: T) async throws -> T.Response {
         let urlRequest = try configureURLRequest(request)
+        debugLog("➡️ Performing request: \(urlRequest.httpMethod ?? "") \(urlRequest.url?.absoluteString ?? "")")
         do {
             let (data, response) = try await urlSession.data(for: urlRequest)
 
             guard let httpResponse = response as? HTTPURLResponse else {
                 throw NetworkError.invalidResponseType
+            }
+
+            debugLog("⬅️ Status code: \(httpResponse.statusCode)")
+            debugLog("📍 URL: \(httpResponse.url?.absoluteString ?? "nil")")
+            debugLog("🧾 Headers:")
+            for (key, value) in httpResponse.allHeaderFields {
+                debugLog("   \(key): \(value)")
+            }
+
+            if let bodyString = String(data: data, encoding: .utf8) {
+                debugLog("📦 Body:\n\(bodyString)")
+            } else {
+                debugLog("❌ No body or unable to decode.")
             }
 
             guard (200...299).contains(httpResponse.statusCode) else {
@@ -78,5 +92,11 @@ public final class NetworkManager: NetworkManagerProtocol {
         } catch {
             throw NetworkError.decodingFailed(error)
         }
+    }
+
+    private func debugLog(_ message: String) {
+#if DEBUG
+        print("📡 [NetworkManager] \(message)")
+#endif
     }
 }
