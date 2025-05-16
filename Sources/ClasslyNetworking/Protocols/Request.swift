@@ -7,8 +7,8 @@
 
 import Foundation
 
-public protocol Request {
-    associatedtype Response: Decodable
+public protocol Request: Sendable {
+    associatedtype Response: Decodable, Sendable
 
     var urlMethod: HTTPMethod { get set }
     var baseURL: String { get }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class NetworkManager: NetworkManagerProtocol {
+public actor NetworkManager: NetworkManagerProtocol {
     private let encoder = JSONEncoder()
     private let urlSession: URLSession
     private let jsonDecoder = JSONDecoder()

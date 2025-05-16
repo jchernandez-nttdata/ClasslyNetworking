@@ -8,6 +8,6 @@
 import Foundation
 
 /// Represents HTTP methods used in network requests
-public enum HTTPMethod: String {
+public enum HTTPMethod: String, Sendable {
     case GET, POST, DELETE, PUT
 }
